@@ -1,0 +1,31 @@
+#!/bin/execlineb -P
+
+define home /srv/jutut
+define run /run/jutut
+fdmove -c 2 1
+
+# Conditionally define celery
+# (-s is undocumented magic, that seems to move _prog_ to end of _then_ or
+# _else_ blocks and thus makes _define_ work)
+ifthenelse -s { test -e /local/venv_jutut/bin/celery }
+{ define celery /local/venv_jutut/bin/celery }
+{ define celery /usr/local/bin/celery }
+
+# Wait for dependencies
+#if { s6-svwait -t 2000 -U /var/run/s6/services/postgresql/ }
+#if { s6-svwait -t 2000 -U /var/run/s6/services/rabbitmq/ }
+
+# Use container environment
+with-contenv
+
+# user and workdir
+s6-setuidgid jutut
+s6-env HOME=${home}
+cd ${home}
+
+# run daemon
+${celery} worker
+ --pidfile=${run}/celery-worker.pid
+ --loglevel=info
+ --autoscale=6,1
+ --app jutut
