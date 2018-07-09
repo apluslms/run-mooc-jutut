@@ -7,11 +7,12 @@ ENV CONTAINER_TYPE="jutut" \
 
 COPY rootfs /
 
+ARG BRANCH=master
 RUN adduser --system --no-create-home --disabled-password --gecos "MOOC Jutut webapp server,,," --home /srv/jutut --ingroup nogroup jutut \
   && mkdir /srv/jutut && chown jutut.nogroup /srv/jutut && cd /srv/jutut \
 \
   # 1) clone, prebuild .pyc files
-  && git clone --quiet --single-branch https://github.com/Aalto-LeTech/mooc-jutut.git . \
+  && git clone --quiet --single-branch --branch $BRANCH https://github.com/Aalto-LeTech/mooc-jutut.git . \
   && (echo "On branch $(git rev-parse --abbrev-ref HEAD) | $(git describe)"; echo; git log -n5) > GIT \
   && rm -rf .git \
   && python3 -m compileall -q . \
