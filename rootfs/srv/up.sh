@@ -11,6 +11,7 @@ init-django-db.sh jutut jutut /srv/jutut-setup.py
 
 # With dev code, we need to rerun few init tasks
 if [ -e requirements.txt ]; then
+    setuidgid jutut python3 manage.py migrate --noinput -v0
     python3 manage.py compilemessages -v0
 fi
 setuidgid jutut python3 manage.py collectstatic --noinput -v0
