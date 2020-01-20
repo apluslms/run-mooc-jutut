@@ -1,4 +1,4 @@
-FROM apluslms/service-base:python3-1.3
+FROM apluslms/service-base:django-1.7
 
 # Set container related configuration via environment variables
 ENV CONTAINER_TYPE="jutut" \
@@ -23,10 +23,14 @@ RUN adduser --system --no-create-home --disabled-password --gecos "MOOC Jutut we
   && find /usr/local/lib/python* -type d -regex '.*/locale/[a-z_A-Z]+' -not -regex '.*/\(en\|fi\|sv\)' -print0 | xargs -0 rm -rf \
   && find /usr/local/lib/python* -type d -name 'tests' -print0 | xargs -0 rm -rf \
 \
-  # 3) preprocess
-  && python3 manage.py compilemessages 2>&1 \
-  && env JUTUT_SECRET_KEY="dummy" create-django-db.sh jutut jutut /srv/jutut-setup.py
+ # 3) preprocess
+ && export \
+    JUTUT_SECRET_KEY="-" \
+    JUTUT_CACHES="{\"default\": {\"BACKEND\": \"django.core.cache.backends.dummy.DummyCache\"}}" \
+ && python3 manage.py compilemessages 2>&1 \
+ && create-db.sh jutut jutut django-migrate.sh \
+ && :
 
 EXPOSE 8082
 WORKDIR /srv/jutut/
-ENTRYPOINT [ "/init", "/srv/up.sh" ]
+CMD [ "manage", "runserver", "0.0.0.0:8082" ]

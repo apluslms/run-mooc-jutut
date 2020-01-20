@@ -49,10 +49,10 @@ LOGGING['loggers'].update({
 })
 
 JUTUT['SERVICE_STATUS'] = (
-    ('Django gunicorn', 'echo "yes"'),
-    ('RabbitMQ', ('rabbitmqctl', 'status')),
-    ('Celery workers', "celery -A jutut status"),
-    ('Celery beat', "./scripts/celery_beat_status.sh"),
+    #('PostgreSQL', ('s6-svstat', '/run/s6/services/postgresql/')),
+    #('RabbitMQ', ('s6-svstat', '/run/s6/services/rabbitmq/')),
+    #('Celery workers', ('s6-svstat', '/run/s6/services/jutut-celery-worker/')),
+    #('Celery beat', ('s6-svstat', '/run/s6/services/jutut-celery-beat/')),
 )
 
 # kate: space-indent on; indent-width 4;
