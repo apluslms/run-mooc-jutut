@@ -1,4 +1,4 @@
-FROM apluslms/service-base:django-1.7
+FROM apluslms/service-base:django-1.8
 
 # Set container related configuration via environment variables
 ENV CONTAINER_TYPE="jutut" \
