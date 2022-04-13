@@ -1,4 +1,4 @@
-FROM apluslms/service-base:django-1.8
+FROM apluslms/service-base:django-1.13
 
 # Set container related configuration via environment variables
 ENV CONTAINER_TYPE="jutut" \
@@ -12,7 +12,7 @@ RUN adduser --system --no-create-home --disabled-password --gecos "MOOC Jutut we
   && mkdir /srv/jutut && chown jutut.nogroup /srv/jutut && cd /srv/jutut \
 \
   # 1) clone, prebuild .pyc files
-  && git clone --quiet --single-branch --branch $BRANCH https://github.com/Aalto-LeTech/mooc-jutut.git . \
+  && git clone --quiet --single-branch --branch $BRANCH https://github.com/apluslms/mooc-jutut.git . \
   && (echo "On branch $(git rev-parse --abbrev-ref HEAD) | $(git describe)"; echo; git log -n5) > GIT \
   && rm -rf .git \
   && python3 -m compileall -q . \

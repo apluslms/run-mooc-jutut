@@ -1,6 +1,6 @@
 # run-mooc-jutut
 
-Docker container for running [MOOC-Jutut](https://github.com/Aalto-LeTech/mooc-jutut).
+Docker container for running [MOOC-Jutut](https://github.com/apluslms/mooc-jutut).
 This is intended for local development and testing.
 
 # Usage
