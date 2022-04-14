@@ -24,8 +24,9 @@ s6-env HOME=${home}
 cd ${home}
 
 # run daemon
-${python3} -m celery beat
+${python3} -m celery
+ --app jutut
+ beat
  --pidfile=${run}/celery-beat.pid
  --loglevel=info
  --schedule=/local/jutut/celery-beat-schedule
- --app jutut
