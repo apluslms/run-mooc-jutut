@@ -24,8 +24,9 @@ s6-env HOME=${home}
 cd ${home}
 
 # run daemon
-${python3} -m celery worker
+${python3} -m celery
+ --app jutut
+ worker
  --pidfile=${run}/celery-worker.pid
  --loglevel=info
  --autoscale=6,1
- --app jutut
