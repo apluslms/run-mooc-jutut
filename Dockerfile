@@ -7,7 +7,7 @@ ENV CONTAINER_TYPE="jutut" \
 
 COPY rootfs /
 
-ARG BRANCH=2.4.0
+ARG BRANCH=2.4.1
 RUN adduser --system --no-create-home --disabled-password --gecos "MOOC Jutut webapp server,,," --home /srv/jutut --ingroup nogroup jutut \
   && mkdir /srv/jutut && chown jutut.nogroup /srv/jutut && cd /srv/jutut \
 \
