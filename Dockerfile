@@ -1,4 +1,4 @@
-FROM apluslms/service-base:django-1.15
+FROM apluslms/service-base:django-1.17
 
 # Set container related configuration via environment variables
 ENV CONTAINER_TYPE="jutut" \
@@ -10,6 +10,7 @@ COPY rootfs /
 ARG BRANCH=2.4.3
 RUN adduser --system --no-create-home --disabled-password --gecos "MOOC Jutut webapp server,,," --home /srv/jutut --ingroup nogroup jutut \
   && mkdir /srv/jutut && chown jutut.nogroup /srv/jutut && cd /srv/jutut \
+  && git config --global --add safe.directory /srv/jutut \
 \
   # 1) clone, prebuild .pyc files
   && git clone --quiet --single-branch --branch $BRANCH https://github.com/apluslms/mooc-jutut.git . \
@@ -19,7 +20,9 @@ RUN adduser --system --no-create-home --disabled-password --gecos "MOOC Jutut we
 \
   # 2) install requirements, remove the file, remove unrequired locales and tests
   && pip_install -r requirements.txt \
-  && rm requirements.txt \
+  && pip_install -r requirements_testing.txt \
+  && pip_install "django-debug-toolbar >= 3.8.1" \
+  && rm requirements.txt requirements_testing.txt \
   && find /usr/local/lib/python* -type d -regex '.*/locale/[a-z_A-Z]+' -not -regex '.*/\(en\|fi\|sv\)' -print0 | xargs -0 rm -rf \
   && find /usr/local/lib/python* -type d -name 'tests' -print0 | xargs -0 rm -rf \
 \
